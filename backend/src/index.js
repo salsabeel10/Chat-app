@@ -11,7 +11,7 @@ dotenv.config()
 const app = express()
 const port = process.env.PORT||5005
 
-//middleware for extract data from body
+//middleware
 app.use(express.json({limit:'5mb'}));
 app.use(express.urlencoded({ limit: '5mb', extended: true }))
 app.use(cookieParser());
@@ -23,7 +23,7 @@ app.use(
 )
 
 app.use('/api/auth',authRoutes)
-app.use('/api/message', messageRoutes)
+app.use('/api/messages', messageRoutes)
 
 app.listen(port,()=>{
     console.log(`server Running on ${port}`)
