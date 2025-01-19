@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
-import { useChatStore } from '../store/useChatStore'
 import { Image, Send, X } from 'lucide-react'
+import { useChatStore } from '../store/useChatStore'
 
 const MessageInput = () => {
   const [text, setText] = useState('')
@@ -28,22 +28,16 @@ const MessageInput = () => {
   const handleSendMessage = async (e) => {
     e.preventDefault()
     if (!text.trim() && !imagePreview) return
-    
-
 
     try {
       await sendMessage({
         text: text.trim(),
         image: imagePreview,
       })
-      console.log('Text after setText:', text)
-      console.log('ImagePreview after setImagePreview:', imagePreview)
-
       // Clear form
       setText('')
       setImagePreview(null)
       if (fileInputRef.current) fileInputRef.current.value = ''
-      console.log('Form cleared successfully')
     } catch (error) {
       console.error('Failed to send message:', error)
     }
