@@ -19,7 +19,7 @@ export const useAuthStore = create((set, get) => ({
       //checking each refresh app
       const res = await axiosInstance.get('auth/check')
       set({ authUser: res.data })
-      get.connectSocket()
+      get().connectSocket()
     } catch (error) {
       console.log('error in check auth', error)
       set({ authUser: null })
@@ -80,10 +80,19 @@ export const useAuthStore = create((set, get) => ({
   },
   connectSocket: () => {
     const { authUser } = get()
+    console.log(authUser)
     if (!authUser || get().socket?.connected) return
-    const socket = io(BASE_URL) // Initialize socket
+    const socket = io(BASE_URL,{
+      query:{
+        userId:authUser._id,
+      },
+    });
     socket.connect()
     set({ socket }) // Store socket in the state
+
+    socket.on('getOnlineUsers',(userId)=>{
+      set({onlineUsers:userId})
+    });
   },
   disconnectSocket: () => {
      const socket = get().socket // Access the socket from the state
